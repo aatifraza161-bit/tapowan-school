@@ -2726,10 +2726,30 @@ function renderTable() {
       `;
     } else if (currentModule === "appLiveUsers") {
       const phone = item.phone ? String(item.phone).replace(/\D/g, '') : '';
+      let fieldsArr = [];
+      try {
+        if (item.allowed_edit_fields) {
+          fieldsArr = typeof item.allowed_edit_fields === 'string' ? JSON.parse(item.allowed_edit_fields) : item.allowed_edit_fields;
+        }
+      } catch(e) {
+        if (item.allowed_edit_fields) fieldsArr = item.allowed_edit_fields.split(',').filter(Boolean);
+      }
+      const hasAuth = (item.allow_profile_edit === 1 || item.allow_profile_edit === '1') && Array.isArray(fieldsArr) && fieldsArr.length > 0;
+
       tr.innerHTML = `${cells}<td style="white-space:nowrap;">
         <div style="display:flex;gap:6px;align-items:center;">
-          ${phone ? `<a href="https://wa.me/91${phone.slice(-10)}" target="_blank" class="action-btn" style="background:#25d366;color:#fff;border:none;padding:5px 10px;border-radius:6px;text-decoration:none;font-size:12px;display:inline-flex;align-items:center;gap:4px;font-weight:600;" title="Chat on WhatsApp">💬 WhatsApp</a>` : ''}
-          ${canDel ? `<button class="chip" data-delete-id="${item.id}" style="margin:0;">🗑️</button>` : '—'}
+          <!-- Granular Authority Button -->
+          <button type="button" class="action-btn" onclick="openGrantAppAuthModal('${escapeHtml(item.admission_no || '')}', '${escapeHtml(item.student_name || '')}')" style="background:${hasAuth ? '#dcfce7' : '#eff6ff'};color:${hasAuth ? '#15803d' : '#2563eb'};border:1px solid ${hasAuth ? '#86efac' : '#bfdbfe'};padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 5px rgba(0,0,0,0.04);" title="Grant / Edit Permissions for Student in Mobile App">
+            ${hasAuth ? `🔑 Permissions (${fieldsArr.length} ${fieldsArr.length === 1 ? 'Field' : 'Fields'})` : '🔑 Grant Permission'}
+          </button>
+
+          <!-- Admin Edit Dialog -->
+          <button type="button" class="action-btn" onclick="openEditMobileStudentModal('${escapeHtml(item.admission_no || '')}', '${escapeHtml(item.student_name || '')}', ${item.id || 0})" style="background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700;font-size:12px;display:inline-flex;align-items:center;gap:4px;" title="Admin Edit on Web">
+            ✏️ Edit
+          </button>
+
+          ${phone ? `<a href="https://wa.me/91${phone.slice(-10)}" target="_blank" class="action-btn" style="background:#25d366;color:#fff;border:none;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:12px;display:inline-flex;align-items:center;gap:4px;font-weight:700;" title="Chat on WhatsApp">💬 WhatsApp</a>` : ''}
+          ${canDel ? `<button class="chip" data-delete-id="${item.id}" style="margin:0;border-radius:8px;padding:5px 8px;">🗑️</button>` : '—'}
         </div>
       </td>`;
     } else if (currentModule === "announcements") {
