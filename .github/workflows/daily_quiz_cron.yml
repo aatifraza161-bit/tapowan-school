@@ -1,0 +1,37 @@
+name: Daily 12 AM Online 1400 Questions AI Quiz Generator
+
+on:
+  schedule:
+    # 18:30 UTC = 12:00 AM Midnight Indian Standard Time (IST)
+    - cron: '30 18 * * *'
+    # 00:00 UTC = 5:30 AM IST (Morning backup trigger)
+    - cron: '0 0 * * *'
+    # 06:00 UTC = 11:30 AM IST (Noon backup trigger)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allows manual 1-click trigger from GitHub Actions tab
+
+jobs:
+  generate-daily-1400-quizzes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: PUPPETEER_SKIP_DOWNLOAD=true npm install --no-audit --no-fund --legacy-peer-deps
+
+      - name: Run Daily 1,400 Questions Generation (70 Quizzes across all 13 Classes)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || 'AIzaSyBrJCviCSRNunM74esP8JNxUarRrbuK8Vk' }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY || 'OPENROUTER_API_KEY_PLACEHOLDER' }}
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL || 'libsql://tapowan-im-aatif.aws-ap-northeast-1.turso.io' }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN || 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODY1MTcyOTQsImlkIjoiMDE5ZmY0YWUtM2YwMS03YTYwLWI4NTgtMWQ4M2JlYjJkNzJkIiwia2lkIjoiblRLTmdsNnYyaFQ4LTlhT09uQV9JdERDc3BTdk9iejhSYzNuY0hSNUhOVSIsInJpZCI6ImZmMWI4YTE5LWFhZTgtNGM5MS1hNjFhLTlkMTY1NTQ1OTEyOCJ9.a-w2gyEauZrfLwqWAMh2QLqHmqOxIsziDu9WRBrCPmLaoZThvoDlPdW4VjQ6ST5hRYJj1E1R0sJELyNPg4zrBQ' }}
+        run: node scripts/generateAll1400Questions.js

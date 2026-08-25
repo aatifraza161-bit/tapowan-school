@@ -1,0 +1,26 @@
+﻿name: TPS Colab GPU Keep-Alive Heartbeat
+
+on:
+  schedule:
+    # Runs every 25 minutes 24/7 in the cloud (No PC needed)
+    - cron: '*/25 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-colab:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Colab InsightFace GPU Server
+        run: |
+          URL="${{ secrets.COLAB_GPU_URL }}"
+          if [ -z "$URL" ]; then
+            URL="https://wav-anderson-nikon-locks.trycloudflare.com"
+          fi
+          echo "🌐 Sending Keep-Alive Ping to: $URL"
+          RESPONSE=$(curl -s -m 15 "$URL/status" || echo "failed")
+          echo "📥 Response: $RESPONSE"
+          if [[ "$RESPONSE" == *"ready"* ]] || [[ "$RESPONSE" == *"InsightFace"* ]]; then
+            echo "✅ Colab GPU Server is ACTIVE and responding!"
+          else
+            echo "⚠️ Warning: Colab server may be starting or offline."
+          fi

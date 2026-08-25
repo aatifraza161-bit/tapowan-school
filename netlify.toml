@@ -1,0 +1,17 @@
+[build]
+  publish = "public"
+  command = "npm install --include=optional"
+
+[functions]
+  node_bundler = "nft"
+  included_files = ["node_modules/@libsql/**"]
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+baileys_auth_info
+scratch
+app_extracted
+temp_extract
+*.exe
+*.zip
+.git

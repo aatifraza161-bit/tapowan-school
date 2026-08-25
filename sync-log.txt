@@ -1,0 +1,136 @@
+Starting test-sync...
+Loaded supabase-sync
+LOG: [Supabase Sync] Starting cloud synchronization...
+LOG: [Supabase Sync] Uploaded photo for 675
+LOG: [Supabase Sync] Uploaded photo for 713
+LOG: [Supabase Sync] Uploaded photo for 695
+LOG: [Supabase Sync] Uploaded photo for TPS105
+LOG: [Supabase Sync] Uploaded photo for 732
+LOG: [Supabase Sync] Uploaded photo for 637
+LOG: [Supabase Sync] Uploaded photo for 699
+LOG: [Supabase Sync] Uploaded photo for 795
+LOG: [Supabase Sync] Uploaded photo for 772/25
+LOG: [Supabase Sync] Uploaded photo for 768
+LOG: [Supabase Sync] Uploaded photo for TPS42
+LOG: [Supabase Sync] Uploaded photo for TPS05
+LOG: [Supabase Sync] Realtime subscription status: SUBSCRIBED
+LOG: [Supabase Sync] Uploaded photo for TPS94
+LOG: [Supabase Sync] Uploaded photo for TPS103
+LOG: [Supabase Sync] Uploaded photo for 384
+LOG: [Supabase Sync] Uploaded photo for TPS35
+LOG: [Supabase Sync] Uploaded photo for 482
+LOG: [Supabase Sync] Uploaded photo for 742
+LOG: [Supabase Sync] Uploaded photo for TPS49
+LOG: [Supabase Sync] Uploaded photo for 785
+LOG: [Supabase Sync] Uploaded photo for TPS10
+LOG: [Supabase Sync] Uploaded photo for 021
+LOG: [Supabase Sync] Uploaded photo for 755
+LOG: [Supabase Sync] Uploaded photo for 691/25
+LOG: [Supabase Sync] Uploaded photo for 593
+LOG: [Supabase Sync] Uploaded photo for 450/22
+LOG: [Supabase Sync] Uploaded photo for 788
+LOG: [Supabase Sync] Uploaded photo for 589
+LOG: [Supabase Sync] Uploaded photo for 791
+LOG: [Supabase Sync] Uploaded photo for 789
+LOG: [Supabase Sync] Uploaded photo for TPS34
+LOG: [Supabase Sync] Uploaded photo for 705
+LOG: [Supabase Sync] Uploaded photo for TPS03
+LOG: [Supabase Sync] Uploaded photo for 356
+LOG: [Supabase Sync] Uploaded photo for TPS90
+LOG: [Supabase Sync] Uploaded photo for 628
+LOG: [Supabase Sync] Uploaded photo for 033
+LOG: [Supabase Sync] Uploaded photo for TPS57
+LOG: [Supabase Sync] Uploaded photo for TPS51
+LOG: [Supabase Sync] Uploaded photo for TPS99
+LOG: [Supabase Sync] Uploaded photo for 702
+LOG: [Supabase Sync] Uploaded photo for TPS45
+LOG: [Supabase Sync] Uploaded photo for 509/23
+LOG: [Supabase Sync] Uploaded photo for 380
+LOG: [Supabase Sync] Uploaded photo for 603/24
+LOG: [Supabase Sync] Uploaded photo for 716
+LOG: [Supabase Sync] Uploaded photo for 715
+LOG: [Supabase Sync] Uploaded photo for 556
+LOG: [Supabase Sync] Uploaded photo for TPS13
+LOG: [Supabase Sync] Uploaded photo for 240
+LOG: [Supabase Sync] Uploaded photo for 732
+LOG: [Supabase Sync] Uploaded photo for 796
+LOG: [Supabase Sync] Uploaded photo for 756
+LOG: [Supabase Sync] Uploaded photo for 150
+LOG: [Supabase Sync] Uploaded photo for TPS111
+LOG: [Supabase Sync] Uploaded photo for 790
+LOG: [Supabase Sync] Uploaded photo for 736
+LOG: [Supabase Sync] Uploaded photo for TPS43
+LOG: [Supabase Sync] Uploaded photo for 723/25
+LOG: [Supabase Sync] Uploaded photo for TPS110
+LOG: [Supabase Sync] Uploaded photo for TPS97
+LOG: [Supabase Sync] Uploaded photo for TPS93
+LOG: [Supabase Sync] Uploaded photo for TPS114
+LOG: [Supabase Sync] Uploaded photo for 399
+LOG: [Supabase Sync] Uploaded photo for TPS39
+LOG: [Supabase Sync] Uploaded photo for 088/18
+LOG: [Supabase Sync] Uploaded photo for TPS14
+LOG: [Supabase Sync] Uploaded photo for 689/25
+LOG: [Supabase Sync] Uploaded photo for TPS89
+LOG: [Supabase Sync] Uploaded photo for 706/25
+LOG: [Supabase Sync] Uploaded photo for 709/25
+LOG: [Supabase Sync] Uploaded photo for 659/25
+LOG: [Supabase Sync] Uploaded photo for TPS113
+LOG: [Supabase Sync] Uploaded photo for 802/26
+LOG: [Supabase Sync] Uploaded photo for 492
+LOG: [Supabase Sync] Uploaded photo for 726/25
+LOG: [Supabase Sync] Uploaded photo for 176
+LOG: [Supabase Sync] Uploaded photo for TPS21
+LOG: [Supabase Sync] Uploaded photo for 419
+LOG: [Supabase Sync] Uploaded photo for 708/25
+LOG: [Supabase Sync] Uploaded photo for 140
+LOG: [Supabase Sync] Uploaded photo for TPS27
+LOG: [Supabase Sync] Uploaded photo for /18
+LOG: [Supabase Sync] Uploaded photo for 062
+LOG: [Supabase Sync] Uploaded photo for 570
+LOG: [Supabase Sync] Uploaded photo for TPS85
+LOG: [Supabase Sync] Uploaded photo for 051/18
+LOG: [Supabase Sync] Uploaded photo for TPS63
+LOG: [Supabase Sync] Uploaded photo for TPS02
+LOG: [Supabase Sync] Uploaded photo for TPS108
+LOG: [Supabase Sync] Uploaded photo for TPS109
+LOG: [Supabase Sync] Uploaded photo for 581
+LOG: [Supabase Sync] Uploaded photo for 596/24
+LOG: [Supabase Sync] Uploaded photo for 428/22
+LOG: [Supabase Sync] Uploaded photo for 359
+LOG: [Supabase Sync] Uploaded photo for TPS59
+LOG: [Supabase Sync] Uploaded photo for 760
+LOG: [Supabase Sync] Uploaded photo for TPS23
+LOG: [Supabase Sync] Uploaded photo for 226/19
+LOG: [Supabase Sync] Uploaded photo for 072/18
+LOG: [Supabase Sync] Uploaded photo for 759
+LOG: [Supabase Sync] Uploaded photo for 497
+LOG: [Supabase Sync] Uploaded photo for TPS101
+LOG: [Supabase Sync] Syncing 242 students, 3 transactions, 31 holidays, 576 timetable entries, 1 notifications
+LOG: [Supabase Sync] ✅ 242 students synced
+ERROR: [Supabase Sync] Dues batch 1 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 2 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 3 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 4 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 5 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 6 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 7 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 8 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 9 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 10 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 11 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 12 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 13 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 14 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 15 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+ERROR: [Supabase Sync] Dues batch 16 error: Could not find the 'payId' column of 'app_student_dues' in the schema cache
+LOG: [Supabase Sync] ✅ 0 dues synced to new database
+LOG: [Supabase Sync] Successfully synced to cloud!
+LOG: Sync finished.
+Sync finished.
+Starting test-sync...
+Loaded supabase-sync
+LOG: [Supabase Sync] Starting cloud synchronization...
+ERROR: [Supabase Sync] Error: SQLITE_ERROR: no such table: dueManagement
+LOG: Sync finished.
+Sync finished.
+LOG: [Supabase Sync] Realtime subscription status: SUBSCRIBED

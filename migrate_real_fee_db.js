@@ -1,0 +1,61 @@
+const { createClient } = require('@libsql/client');
+require('dotenv').config();
+const path = require('path');
+
+const appData = process.env.APPDATA || path.join(process.env.USERPROFILE, 'AppData', 'Roaming');
+const dbPath = path.join(appData, 'school-management-system', 'school-fee-replica.db');
+
+const localClient = createClient({ url: 'file:' + dbPath.replace(/\\/g, '/') });
+const remoteClient = createClient({
+  url: process.env.TURSO_FEE_DATABASE_URL,
+  authToken: process.env.TURSO_FEE_AUTH_TOKEN
+});
+
+async function run() {
+  console.log(`Loading real FEE DB from: ${dbPath}`);
+  const tablesResult = await localClient.execute("SELECT name, sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'libsql_%' AND name NOT LIKE '_litestream_%'");
+  const tables = tablesResult.rows;
+  
+  for (const tableObj of tables) {
+    const table = tableObj.name;
+    const createSql = tableObj.sql;
+    console.log(`\nMigrating table: ${table}`);
+    
+    // Create remote table if missing
+    if (createSql) {
+      await remoteClient.execute(createSql.replace('CREATE TABLE', 'CREATE TABLE IF NOT EXISTS'));
+      console.log(`  Created remote table ${table}`);
+    }
+    
+    // Clear remote table
+    await remoteClient.execute(`DELETE FROM ${table}`);
+    console.log(`  Cleared remote table ${table}`);
+    
+    // Fetch local rows
+    const rowsResult = await localClient.execute(`SELECT * FROM ${table}`);
+    const rows = rowsResult.rows;
+    console.log(`  Found ${rows.length} rows to migrate.`);
+    
+    if (rows.length === 0) continue;
+    
+    const columns = Object.keys(rows[0]).filter(k => isNaN(parseInt(k)));
+    const placeholders = columns.map(() => '?').join(', ');
+    const sql = `INSERT INTO ${table} (${columns.join(', ')}) VALUES (${placeholders})`;
+    
+    const batch = rows.map(row => {
+      const args = columns.map(col => row[col]);
+      return { sql, args };
+    });
+    
+    for (let i = 0; i < batch.length; i += 100) {
+      const chunk = batch.slice(i, i + 100);
+      await remoteClient.batch(chunk, 'write');
+      if ((i % 1000) === 0) console.log(`  Inserted rows ${i + 1} to ${Math.min(i + 100, batch.length)}...`);
+    }
+    console.log(`  Finished table ${table}`);
+  }
+  
+  console.log("\nFEE DB Migration completed successfully!");
+}
+
+run().catch(console.error);

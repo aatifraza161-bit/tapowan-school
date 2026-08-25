@@ -1,0 +1,48 @@
+﻿name: 🚀 Launch Kaggle GPU InsightFace Server
+
+on:
+  schedule:
+    # Runs every morning at 6:00 AM IST (00:30 UTC)
+    - cron: '30 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  launch-kaggle-gpu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Kaggle CLI
+        run: pip install --upgrade kaggle
+
+      - name: Authenticate & Push Kernel to Kaggle GPU
+        env:
+          KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        run: |
+          mkdir -p ~/.kaggle
+          if [ -n "$KAGGLE_API_TOKEN" ]; then
+            echo "$KAGGLE_API_TOKEN" > ~/.kaggle/access_token
+            export KAGGLE_API_TOKEN="$KAGGLE_API_TOKEN"
+          fi
+          if [ -n "$KAGGLE_USERNAME" ] && [ -n "$KAGGLE_KEY" ]; then
+            echo "{\"username\":\"$KAGGLE_USERNAME\",\"key\":\"$KAGGLE_KEY\"}" > ~/.kaggle/kaggle.json
+          fi
+          chmod 600 ~/.kaggle/* 2>/dev/null || true
+          
+          # Auto-detect username from Kaggle CLI
+          USER_NAME=$(kaggle config view | grep "username" | cut -d':' -f2 | xargs || echo "$KAGGLE_USERNAME")
+          if [ -n "$USER_NAME" ]; then
+            sed -i "s|aatifraza/|$USER_NAME/|g" kaggle/kernel-metadata.json
+          fi
+
+          echo "🚀 Pushing & Executing GPU Notebook on Kaggle Cloud..."
+          kaggle kernels push -p kaggle
+          echo "✅ Kaggle GPU Notebook launched successfully!"
