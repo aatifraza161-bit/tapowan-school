@@ -1,42 +1,21 @@
-const CACHE_NAME = 'educore-tps-v1787667674375';
-const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './style.css',
-  './app.js',
-  './exam_module.js?v=1',
-  './logo.png'
-];
+const CACHE_NAME = 'educore-tps-v1787673189304';
 
-// Install event: cache static assets
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS_TO_CACHE))
-      .then(() => self.skipWaiting())
-  );
+  self.skipWaiting();
 });
 
-// Activate event: clean up old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.filter(name => name !== CACHE_NAME)
-          .map(name => caches.delete(name))
-      );
-    }).then(() => self.clients.claim())
+    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
   );
 });
 
-// Fetch event: Network-first approach to ensure fresh data
+// Network-First: Always fetch latest app.js and HTML
 self.addEventListener('fetch', event => {
-  // Bypassing service worker entirely for API calls so they are handled natively by the browser
-  if (event.request.url.includes('/api/')) {
+  if (event.request.url.includes('/api/') || event.request.url.includes('app.js') || event.request.url.includes('.html')) {
     return;
   }
-
-  // Network First strategy for other assets
   event.respondWith(
     fetch(event.request).catch(() => caches.match(event.request))
   );
