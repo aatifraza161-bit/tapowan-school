@@ -545,6 +545,7 @@ const refs = {
   importFile: document.getElementById("importFile"),
   exportPdfBtn: document.getElementById("exportPdfBtn"),
   printDocBtn: document.getElementById("printDocBtn"),
+  appReleasesBtn: document.getElementById("appReleasesBtn"),
   facePanel: document.getElementById("facePanel"),
   startCameraBtn: document.getElementById("startCameraBtn"),
   captureFaceBtn: document.getElementById("captureFaceBtn"),
@@ -4712,6 +4713,7 @@ function renderModuleTools() {
     refs.freeTeachersBtn.classList.toggle("hidden", currentModule !== "timetable");
   }
   if (refs.print4in1Btn) refs.print4in1Btn.classList.toggle("hidden", currentModule !== "fees");
+  if (refs.appReleasesBtn) refs.appReleasesBtn.classList.toggle("hidden", currentModule !== "appLiveUsers");
 
   // Face panel only for users who can write attendance or manage people
   const showFacePanel = (currentModule === "attendance" || currentModule === "teacherAttendance" || currentModule === "students" || currentModule === "teachers")
@@ -19152,4 +19154,104 @@ function setupGrantAuthFormListener() {
       }
     });
   }
+}
+
+
+
+// ─── App Release & Version Control Manager ───
+window.openAppReleaseControlModal = async function() {
+  const modal = document.getElementById('appReleaseControlModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  modal.classList.remove('hidden');
+  await loadActiveReleasesList();
+};
+
+window.closeAppReleaseControlModal = function() {
+  const modal = document.getElementById('appReleaseControlModal');
+  if (!modal) return;
+  modal.style.display = 'none';
+  modal.classList.add('hidden');
+};
+
+async function loadActiveReleasesList() {
+  const container = document.getElementById('activeReleasesListContainer');
+  if (!container) return;
+  try {
+    const res = await fetchDirectFromTurso("SELECT * FROM app_updates ORDER BY version_code DESC LIMIT 5");
+    if (!res || !res.rows || res.rows.length === 0) {
+      container.innerHTML = '<p style="margin:0;color:#94a3b8;">No releases published yet.</p>';
+      return;
+    }
+    const html = res.rows.map(r => `
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <strong style="color:#0f172a;font-size:0.88rem;">v${r.version}</strong>
+            <span style="background:#eff6ff;color:#2563eb;font-size:0.7rem;padding:2px 6px;border-radius:6px;font-weight:700;">Build ${r.version_code}</span>
+            ${r.is_force_update == 1 ? '<span style="background:#fef2f2;color:#dc2626;font-size:0.7rem;padding:2px 6px;border-radius:6px;font-weight:700;">Mandatory</span>' : ''}
+          </div>
+          <div style="color:#64748b;font-size:0.75rem;margin-top:2px;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.apk_url}</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button type="button" onclick="deleteAppRelease(${r.id})" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;border-radius:6px;padding:4px 8px;font-size:0.75rem;font-weight:700;cursor:pointer;">Delete</button>
+        </div>
+      </div>
+    `).join('');
+    container.innerHTML = html;
+  } catch(e) {
+    container.innerHTML = '<p style="color:#dc2626;margin:0;">Error loading releases: ' + e.message + '</p>';
+  }
+}
+
+window.deleteAppRelease = async function(id) {
+  if (!confirm("Are you sure you want to delete this release?")) return;
+  try {
+    await fetchDirectFromTurso("DELETE FROM app_updates WHERE id = ?", [id]);
+    if (typeof showToast === 'function') showToast("Release deleted", "info");
+    await loadActiveReleasesList();
+  } catch(e) {
+    alert("Delete failed: " + e.message);
+  }
+};
+
+function setupAppReleaseFormListener() {
+  const form = document.getElementById('appReleaseControlForm');
+  if (!form || form._hasReleaseListener) return;
+  form._hasReleaseListener = true;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const saveBtn = document.getElementById('saveReleaseBtn');
+    if (saveBtn) { saveBtn.disabled = true; saveBtn.innerText = 'Publishing...'; }
+
+    try {
+      const version = document.getElementById('releaseVersionName').value.trim();
+      const versionCode = parseInt(document.getElementById('releaseVersionCode').value.trim(), 10) || 1;
+      const apkUrl = document.getElementById('releaseApkUrl').value.trim();
+      const title = document.getElementById('releaseTitle').value.trim() || 'New Version Available';
+      const releaseNotes = document.getElementById('releaseNotes').value.trim();
+      const isForceUpdate = document.getElementById('releaseIsForceUpdate').checked ? 1 : 0;
+
+      await fetchDirectFromTurso(
+        "INSERT INTO app_updates (version, version_code, apk_url, title, release_notes, is_force_update, is_active) VALUES (?, ?, ?, ?, ?, ?, 1)",
+        [version, versionCode, apkUrl, title, releaseNotes, isForceUpdate]
+      );
+
+      if (typeof showToast === 'function') {
+        showToast(`Release v${version} (Build ${versionCode}) published successfully!`, 'success');
+      } else {
+        alert(`Release v${version} published successfully!`);
+      }
+
+      await loadActiveReleasesList();
+      form.reset();
+      document.getElementById('releaseApkUrl').value = 'https://tapowan-school.vercel.app/TPS-Original-App.apk';
+      document.getElementById('releaseTitle').value = 'New Version Available';
+    } catch(err) {
+      alert("Failed to publish release: " + err.message);
+    } finally {
+      if (saveBtn) { saveBtn.disabled = false; saveBtn.innerText = 'Publish Release'; }
+    }
+  });
 }
